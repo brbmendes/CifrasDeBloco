@@ -34,15 +34,20 @@ public class main {
 				
 				// Obtem o vetor de inicializacao
 				String vetorInicializacao = obterVetorInicializacao(entrada);
-				byte[] iv = AES.toByteArray(vetorInicializacao);
-				IvParameterSpec ivParameterSpec = new IvParameterSpec(iv);
 				
 				// obtem o tipo de modo de operacao, a chave e o texto SEM o vetor de inicializacao
 				String tipo = obterInfo(entrada, "tipo");
-				String chave = obterInfo(entrada, "chave");
+				String chave = obterInfo(entrada, "chave");				
 				String texto = obterInfo(entrada, "texto");
 				
+				// Converte o vetor de inicialização em bytes, e obtem o ivSpec
+				byte[] iv = AES.toByteArray(vetorInicializacao);
+				IvParameterSpec ivParameterSpec = new IvParameterSpec(iv);
+				
+				// Converte a chave em bytes, e obtem a keySpec
+				byte[] key = AES.toByteArray(chave);
 				SecretKeySpec sKeySpec = AES.getSecretKey(chave);
+				
 				
 				if(tipo.equals("cbc")) {
 					cripto = "AES/CBC/PKCS5Padding";
@@ -51,7 +56,11 @@ public class main {
 				}
 				Cipher cipher = Cipher.getInstance(cripto);
 				
-				cipher.init(Cipher.ENCRYPT_MODE, sKeySpec, ivParameterSpec);
+				if(tipo.equals("cbc")) {
+					cipher.init(Cipher.ENCRYPT_MODE, sKeySpec, ivParameterSpec);
+				} else {
+					cipher.init(Cipher.ENCRYPT_MODE, sKeySpec);
+				}
 				
 				byte[] ciphered = cipher.doFinal(texto.getBytes());
 				
@@ -87,7 +96,11 @@ public class main {
 				}
 				Cipher cipher = Cipher.getInstance(cripto);
 				
-				cipher.init(Cipher.DECRYPT_MODE, sKeySpec, ivParameterSpec);
+				if(tipo.equals("cbc")) {
+					cipher.init(Cipher.ENCRYPT_MODE, sKeySpec, ivParameterSpec);
+				} else {
+					cipher.init(Cipher.ENCRYPT_MODE, sKeySpec);
+				}
 				
 				byte[] deciphered = cipher.doFinal(AES.toByteArray(texto));
 				
@@ -171,9 +184,11 @@ public class main {
 			System.out.println("2 - tarefa 2 ");
 			System.out.println("3 - tarefa 3 ");
 			System.out.println("4 - tarefa 4 ");
+			//System.out.println("8 - tarefa 8 ");
 		} else {
 			System.out.println("5 - tarefa 5 ");
 			System.out.println("6 - tarefa 6 ");
+			//System.out.println("7 - tarefa 7 ");
 		}
 		operacao = s.nextInt();
 		
@@ -195,6 +210,12 @@ public class main {
 			break;
 		case 6:
 			path = "inputs/tarefa_6.txt";
+			break;
+		case 7:
+			path = "inputs/tarefa_7.txt";
+			break;
+		case 8:
+			path = "inputs/tarefa_8.txt";
 			break;
 		}
 		return path;

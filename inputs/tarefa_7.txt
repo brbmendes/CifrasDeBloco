@@ -1,0 +1,2 @@
+cbc_key 140b41b22a29beb4061bda66b6747e14
+cbc_plaintext 4e657874205468757273646179206f6ehojeestoucansadoequerendodormirmasprecisoacabarotrabalho
