@@ -45,7 +45,6 @@ public class main {
 				IvParameterSpec ivParameterSpec = new IvParameterSpec(iv);
 				
 				// Converte a chave em bytes, e obtem a keySpec
-				byte[] key = AES.toByteArray(chave);
 				SecretKeySpec sKeySpec = AES.getSecretKey(chave);
 				
 				
@@ -81,14 +80,17 @@ public class main {
 				
 				// Obtem o vetor de inicializacao
 				String vetorInicializacao = obterVetorInicializacao(entrada);
-				byte[] iv = AES.toByteArray(vetorInicializacao);
-				IvParameterSpec ivParameterSpec = new IvParameterSpec(iv);
 				
 				// obtem o tipo de modo de operacao, a chave e o texto SEM o vetor de inicializacao
 				String tipo = obterInfo(entrada, "tipo");
 				String chave = obterInfo(entrada, "chave");
 				String texto = obterInfo(entrada, "texto");
 				
+				// Converte o vetor de inicialização em bytes, e obtem o ivSpec
+				byte[] iv = AES.toByteArray(vetorInicializacao);
+				IvParameterSpec ivParameterSpec = new IvParameterSpec(iv);
+				
+				// Converte a chave em bytes, e obtem a keySpec
 				SecretKeySpec sKeySpec = AES.getSecretKey(chave);
 				
 				if(tipo.equals("cbc")) {
