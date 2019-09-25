@@ -23,7 +23,7 @@ public class AES {
 	}
 	
 	// Gera uma chave a partir de uma string
-	// Retorna a chave secreta a partir dos 16 bytes da função hash
+	// Retorna a chave secreta a partir dos 16 bytes da funï¿½ï¿½o hash
 	// aplicada sobre a string
 	public static SecretKeySpec getSecretKey(String passwd) throws Exception {
 		byte[] dataBytes = passwd.getBytes();
