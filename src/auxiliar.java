@@ -106,7 +106,7 @@ public class auxiliar {
 	public static byte[] obterVetorInicializacao(String[] entrada) {
 		String textoCifrado = entrada[1].split(" ")[1];
 		byte[] array = new byte[16];
-		array = Arrays.copyOf(textoCifrado.getBytes(),16);
+		array = Arrays.copyOf(AES.toByteArray(textoCifrado),16);
 		return array;
 	}
 	
