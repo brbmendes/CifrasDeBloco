@@ -1,3 +1,7 @@
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -26,12 +30,11 @@ public class auxiliar {
 			System.out.println("2 - tarefa 2 ");
 			System.out.println("3 - tarefa 3 ");
 			System.out.println("4 - tarefa 4 ");
-			//System.out.println("8 - tarefa 8 ");
+			System.out.println("7 - tarefa 7 (ap�s cifrar texto claro) ");
 		} else {
 			System.out.println("0 - voltar ");
 			System.out.println("5 - tarefa 5 ");
 			System.out.println("6 - tarefa 6 ");
-			//System.out.println("7 - tarefa 7 ");
 		}
 		operacao = s.nextInt();
 		
@@ -56,9 +59,6 @@ public class auxiliar {
 			break;
 		case 7:
 			path = "inputs/tarefa_7.txt";
-			break;
-		case 8:
-			path = "inputs/tarefa_8.txt";
 			break;
 		default:
 			path = "voltar";
@@ -97,6 +97,9 @@ public class auxiliar {
 		case "texto":
 			linhas = array[1].split(" ");
 			retInfo = linhas[1].substring(32);
+			if(array[1].contains("plain")) {
+				retInfo = linhas[1];
+			}
 			break;
 		}
 		
@@ -110,9 +113,10 @@ public class auxiliar {
 		return array;
 	}
 	
-	public static void imprimirSaidaCifrar(String tipo, String chave, String texto, byte[] ciphered) {
+	public static void imprimirSaidaCifrar(String tipo, String chave, String texto, byte[] ciphered, String vetorInicializacao) {
 		System.out.println("Tipo: " + tipo.toUpperCase());
 		System.out.println("Chave: " + chave);
+		System.out.println("Vetor incializacao: " + vetorInicializacao);
 		System.out.println("Texto decifrado: " + texto);
 		System.out.println("Texto cifrado: " + AES.toHexString(ciphered));
 		System.out.println("");
@@ -121,23 +125,20 @@ public class auxiliar {
 	public static void imprimirSaidaDecifrar(String tipo, String chave, String texto, byte[] deciphered, String vetorInicializacao) {
 		System.out.println("Tipo: " + tipo.toUpperCase());
 		System.out.println("Chave: " + chave);
-		System.out.println("Vetor incialização: " + vetorInicializacao);
+		System.out.println("Vetor incializacao: " + vetorInicializacao);
 		System.out.println("Texto cifrado: " + texto);
 		System.out.println("Texto decifrado: " + (new String(deciphered)));
 		System.out.println("");
 	}
 	
-	public static void imprimirSaidaCifrarManual(String senha, String texto, byte[] ciphered) {
-		System.out.println("Senha: " + senha);
-		System.out.println("Texto decifrado: " + texto);
-		System.out.println("Texto cifrado: " + AES.toHexString(ciphered));
-		System.out.println("");
-	}
-	
-	public static void imprimirSaidaDecifrarManual(String senha, String texto, byte[] deciphered) {
-		System.out.println("Senha: " + senha);
-		System.out.println("Texto cifrado: " + texto);
-		System.out.println("Texto decifrado: " + (new String(deciphered)));
-		System.out.println("");
+	public static void gravarTextoCifrado(String modoOperacao, String chave, String vetorInicializacao, String textoCifrado) throws IOException {
+		FileWriter writer = new FileWriter(new File("inputs/tarefa_7.txt"),false);
+	    PrintWriter gravarArq = new PrintWriter(writer);
+	 
+	    gravarArq.printf(String.format("%s_Key %s\n", modoOperacao.toLowerCase(), chave));
+	    
+	    gravarArq.printf(String.format("%s_Ciphertext %s%s", modoOperacao.toLowerCase(), vetorInicializacao, textoCifrado));
+	 
+	    writer.close();
 	}
 }

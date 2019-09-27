@@ -14,10 +14,7 @@ public class main {
 			System.out.println("Informe a operacao desejada: ");
 			System.out.println("1 - Cifrar texto entrada");
 			System.out.println("2 - Decifrar texto entrada");
-			//System.out.println("3 - Cifrar texto manual");
-			//System.out.println("4 - Decifrar texto manual");
-			System.out.println("5 - Cifra e Decifra texto manual - Op. Mode: CBC");
-			System.out.println("6 - Sair");
+			System.out.println("3 - Sair");
 			
 			operacao = s.nextInt();
 			if(operacao == 1) {
@@ -63,13 +60,14 @@ public class main {
 				if(tipo.equals("cbc")) {
 					cipher.init(Cipher.ENCRYPT_MODE, sKeySpec, ivParameterSpec);
 				} else {
-					cipher.init(Cipher.ENCRYPT_MODE, sKeySpec);
+					cipher.init(Cipher.ENCRYPT_MODE, sKeySpec, ivParameterSpec);
 				}
 				
 				// Cifra o texto
 				byte[] ciphered = cipher.doFinal(AES.toByteArray(texto));				
 				
-				auxiliar.imprimirSaidaCifrar(tipo, chave, texto, ciphered);
+				auxiliar.imprimirSaidaCifrar(tipo, chave, texto, ciphered, AES.toHexString(vetorInicializacao));
+				auxiliar.gravarTextoCifrado(tipo, chave, AES.toHexString(vetorInicializacao), AES.toHexString(ciphered));
 			} else if(operacao == 2) {
 				// Decifrar
 				System.out.println("");
@@ -85,8 +83,8 @@ public class main {
 				String[] entrada = auxiliar.lerEntrada(caminho);
 				
 				// Obtem o vetor de inicializacao (IV)
-				//byte[] vetorInicializacao = auxiliar.obterVetorInicializacao(entrada);
-				byte[] vetorInicializacao = AES.toByteArray("4ca00ff4c898d61e1edbf1800618fb28");
+				byte[] vetorInicializacao = auxiliar.obterVetorInicializacao(entrada);
+				
 				// obtem o tipo de modo de operacao, a chave e o texto SEM o vetor de inicializacao
 				String tipo = auxiliar.obterInfo(entrada, "tipo");
 				String chave = auxiliar.obterInfo(entrada, "chave");
@@ -114,7 +112,7 @@ public class main {
 				if(tipo.equals("cbc")) {
 					cipher.init(Cipher.DECRYPT_MODE, sKeySpec, ivParameterSpec);
 				} else {
-					cipher.init(Cipher.DECRYPT_MODE, sKeySpec);
+					cipher.init(Cipher.DECRYPT_MODE, sKeySpec, ivParameterSpec);
 				}
 				
 				// Decifra o texto
@@ -122,83 +120,6 @@ public class main {
 				
 				auxiliar.imprimirSaidaDecifrar(tipo, chave, texto, deciphered, AES.toHexString(vetorInicializacao));
 			} else if(operacao == 3) {
-				System.out.println("");
-				System.out.println("Digite a senha:");
-				System.out.println("");
-				Scanner scan = new Scanner(System.in);
-				
-				String senha = scan.nextLine();
-				
-				System.out.println("");
-				System.out.println("Digite o texto a ser cifrado:");
-				String texto = scan.nextLine();
-				
-				SecretKeySpec sKeySpec = AES.getSecretKey(senha);
-				
-				Cipher cipher = Cipher.getInstance("AES");
-				
-				cipher.init(Cipher.ENCRYPT_MODE, sKeySpec);
-				
-				byte[] ciphered = cipher.doFinal(texto.getBytes());
-				
-				auxiliar.imprimirSaidaCifrarManual(senha, texto, ciphered);
-				System.out.println("");
-			} else if(operacao == 4) {
-				System.out.println("Digite a senha:");
-				System.out.println("");
-				Scanner scan = new Scanner(System.in);
-				
-				String senha = scan.nextLine();
-				
-				System.out.println("Digite o texto a ser decifrado:");
-				String texto = scan.nextLine();
-				
-				SecretKeySpec sKeySpec = AES.getSecretKey(senha);
-				
-				Cipher cipher = Cipher.getInstance("AES");
-				
-				cipher.init(Cipher.DECRYPT_MODE, sKeySpec);
-				
-				byte[] deciphered = cipher.doFinal(AES.toByteArray(texto));
-				
-				auxiliar.imprimirSaidaDecifrarManual(senha, texto, deciphered);
-				System.out.println("");
-			} else if(operacao == 5) {
-				//break;
-				System.out.println("");
-				System.out.println("Digite a senha:");
-				System.out.println("");
-				Scanner scan = new Scanner(System.in);
-				
-				String senha = scan.nextLine();
-				SecretKeySpec sKeySpec = AES.getSecretKey(senha);
-				
-				System.out.println("");
-				System.out.println("Digite o texto a ser cifrado:");
-				String texto = scan.nextLine();
-				
-				String vetorInicializacao = "4e657874205468757273646179206f6e";
-				byte[] iv = AES.toByteArray(vetorInicializacao);
-				IvParameterSpec ivParameterSpec = new IvParameterSpec(iv);
-				
-				
-				Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-				
-				cipher.init(Cipher.ENCRYPT_MODE, sKeySpec, ivParameterSpec);
-				
-				byte[] ciphered = cipher.doFinal(texto.getBytes());
-				
-				auxiliar.imprimirSaidaCifrarManual(senha, texto, ciphered);
-				
-				System.out.println("Digite o texto a ser decifrado:");
-				texto = scan.nextLine();
-				
-				cipher.init(Cipher.DECRYPT_MODE, sKeySpec, ivParameterSpec);
-				
-				byte[] deciphered = cipher.doFinal(AES.toByteArray(texto));
-				
-				auxiliar.imprimirSaidaDecifrarManual(senha, texto, deciphered);
-			} else if(operacao == 6) {
 				break;
 			} else {
 				System.out.println("Operacao invalida\n");
