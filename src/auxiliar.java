@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class auxiliar {
+	public static boolean mostrarTexto7 = false;
 	
 	public static void encerrarPrograma() {
 		System.out.println("");
@@ -30,7 +31,10 @@ public class auxiliar {
 			System.out.println("2 - tarefa 2 ");
 			System.out.println("3 - tarefa 3 ");
 			System.out.println("4 - tarefa 4 ");
-			System.out.println("7 - tarefa 7 (após cifrar texto claro) ");
+			if(mostrarTexto7) {
+				System.out.println("7 - tarefa 7 (após cifrar tarefa 5 ou 6) ");
+			}
+			
 		} else {
 			System.out.println("0 - voltar ");
 			System.out.println("5 - tarefa 5 ");
@@ -87,18 +91,18 @@ public class auxiliar {
 		String retInfo = new String();
 		switch(info) {
 		case "tipo":
-			linhas = array[0].split(" ");
-			retInfo = linhas[0].split("_")[0];
+			linhas = array[0].split(":");
+			retInfo = linhas[0].split(" ")[0];
 			break;
 		case "chave":
-			linhas = array[0].split(" ");
-			retInfo = linhas[1];
+			linhas = array[0].split(":");
+			retInfo = linhas[1].trim();
 			break;
 		case "texto":
-			linhas = array[1].split(" ");
-			retInfo = linhas[1].substring(32);
-			if(array[1].contains("plain")) {
-				retInfo = linhas[1];
+			linhas = array[1].split(":");
+			retInfo = linhas[1].trim().substring(32);
+			if(array[1].contains("Plain")) {
+				retInfo = linhas[1].trim();
 			}
 			break;
 		}
@@ -107,7 +111,7 @@ public class auxiliar {
 	}
 	
 	public static byte[] obterVetorInicializacao(String[] entrada) {
-		String textoCifrado = entrada[1].split(" ")[1];
+		String textoCifrado = entrada[1].split(":")[1].trim();
 		byte[] array = new byte[16];
 		array = Arrays.copyOf(AES.toByteArray(textoCifrado),16);
 		return array;
@@ -132,13 +136,18 @@ public class auxiliar {
 	}
 	
 	public static void gravarTextoCifrado(String modoOperacao, String chave, String vetorInicializacao, String textoCifrado) throws IOException {
+		System.out.println("Gerando tarefa 7...");
+		
 		FileWriter writer = new FileWriter(new File("inputs/tarefa_7.txt"),false);
 	    PrintWriter gravarArq = new PrintWriter(writer);
 	 
-	    gravarArq.printf(String.format("%s_Key %s\n", modoOperacao.toLowerCase(), chave));
+	    gravarArq.printf(String.format("%s key: %s\n", modoOperacao.toUpperCase(), chave));
 	    
-	    gravarArq.printf(String.format("%s_Ciphertext %s%s", modoOperacao.toLowerCase(), vetorInicializacao, textoCifrado));
-	 
+	    gravarArq.printf(String.format("%s Ciphertext: %s%s", modoOperacao.toUpperCase(), vetorInicializacao, textoCifrado));
+	    System.out.println("Gravando arquivo...");
 	    writer.close();
+	    mostrarTexto7 = true;
+	    
+	    System.out.println("Geração concluída...\n");
 	}
 }

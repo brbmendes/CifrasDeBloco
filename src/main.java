@@ -48,7 +48,7 @@ public class main {
 				SecretKeySpec sKeySpec = new SecretKeySpec(byteChave, 0, byteChave.length, "AES");
 				
 				// Define o modo de operacao e padding, se necessario
-				if(tipo.equals("cbc")) {
+				if(tipo.equals("CBC")) {
 					cripto = "AES/CBC/PKCS5Padding";
 				} else {
 					cripto = "AES/CTR/NoPadding";
@@ -57,7 +57,7 @@ public class main {
 				Cipher cipher = Cipher.getInstance(cripto);
 				
 				// Inicializa o cipher passando a chave e, se necessario, o vetor de inicializacao
-				if(tipo.equals("cbc")) {
+				if(tipo.equals("CBC")) {
 					cipher.init(Cipher.ENCRYPT_MODE, sKeySpec, ivParameterSpec);
 				} else {
 					cipher.init(Cipher.ENCRYPT_MODE, sKeySpec, ivParameterSpec);
@@ -100,7 +100,7 @@ public class main {
 				SecretKeySpec sKeySpec = new SecretKeySpec(byteChave, 0, byteChave.length, "AES");
 				
 				// Define o modo de operacao e o padding, se necessario
-				if(tipo.equals("cbc")) {
+				if(tipo.equals("CBC")) {
 					cripto = "AES/CBC/PKCS5Padding";
 				}  else {
 					cripto = "AES/CTR/NoPadding";
@@ -109,7 +109,7 @@ public class main {
 				Cipher cipher = Cipher.getInstance(cripto);
 				
 				// Inicializa o cipher passando a chave e, se necessario, o vetor de inicializacao
-				if(tipo.equals("cbc")) {
+				if(tipo.equals("CBC")) {
 					cipher.init(Cipher.DECRYPT_MODE, sKeySpec, ivParameterSpec);
 				} else {
 					cipher.init(Cipher.DECRYPT_MODE, sKeySpec, ivParameterSpec);
