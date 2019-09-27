@@ -7,7 +7,7 @@ Para o modo de operação CBC, usar PKCS5.
 
 Implementar a cifragem e decifragem. Abaixo são dados as chaves para o AES, e o texto cifrado ou texto claro. Sua tarefa é recuperar o texto claro para aqueles que estão cifrados e cifrar o texto claro. Todos os textos estão em hexadecimal.
 
-Os arquivos estão no formato abaixo (desconsidere "Tarefa x"
+Os arquivos estão no formato abaixo (desconsidere "Tarefa x")
 
 **Tarefa 1**<br />
 CBC key: 140b41b22a29beb4061bda66b6747e14<br />
